@@ -146,4 +146,6 @@ PATH="$HOME/bin:$PATH" make -j 4 && \
 make install && \
 hash -r
     
+source ~/.profile
+
 sudo apt install v4l-utils
