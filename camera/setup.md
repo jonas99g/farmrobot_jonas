@@ -17,6 +17,8 @@ sudo apt update && sudo apt upgrade
 sudo nano /boot/firmware/config.txt [gpu_mem=512 ; start_x=1]
 
 using v4l2m2m encoder to have arm64 hardware support to efficiently encode a efficient h.265 stream which is sent via rtmp to a server which reencodes to hls to view video stream in a browser
+v4l2m2m:
+https://www.willusher.io/general/2020/11/15/hw-accel-encoding-rpi4
 build latest ffmpeg from source to enable needed packages / encoders
 Following guide: https://trac.ffmpeg.org/wiki/CompilationGuide/Ubuntu
 cd /home/pi/
