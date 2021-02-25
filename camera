@@ -59,7 +59,7 @@ tar xjvf nasm-2.15.05.tar.bz2 && \
 cd nasm-2.15.05 && \
 ./autogen.sh && \
 PATH="$HOME/bin:$PATH" ./configure --prefix="$HOME/ffmpeg_build" --bindir="$HOME/bin" && \
-make && \
+make -j 4 && \
 make install
 
 libx264 (H.264 video encoder, fallback)
@@ -67,7 +67,7 @@ cd ~/ffmpeg_sources && \
 git -C x264 pull 2> /dev/null || git clone --depth 1 https://code.videolan.org/videolan/x264.git && \
 cd x264 && \
 PATH="$HOME/bin:$PATH" PKG_CONFIG_PATH="$HOME/ffmpeg_build/lib/pkgconfig" ./configure --prefix="$HOME/ffmpeg_build" --bindir="$HOME/bin" --enable-static --enable-pic && \
-PATH="$HOME/bin:$PATH" make && \
+PATH="$HOME/bin:$PATH" make -j 4 && \
 make install
 
 libx265 (H.265/HEVC video encoder)
@@ -76,7 +76,7 @@ cd ~/ffmpeg_sources && \
 git -C x265_git pull 2> /dev/null || git clone https://bitbucket.org/multicoreware/x265_git && \
 cd x265_git/build/linux && \
 PATH="$HOME/bin:$PATH" cmake -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX="$HOME/ffmpeg_build" -DENABLE_SHARED=off ../../source && \
-PATH="$HOME/bin:$PATH" make && \
+PATH="$HOME/bin:$PATH" make -j 4 && \
 make install
 
 libvpx (VP8/VP9 video encoder/decoder, another efficient video encoder, needs testing)
@@ -84,7 +84,7 @@ cd ~/ffmpeg_sources && \
 git -C libvpx pull 2> /dev/null || git clone --depth 1 https://chromium.googlesource.com/webm/libvpx.git && \
 cd libvpx && \
 PATH="$HOME/bin:$PATH" ./configure --prefix="$HOME/ffmpeg_build" --disable-examples --disable-unit-tests --enable-vp9-highbitdepth --as=yasm && \
-PATH="$HOME/bin:$PATH" make && \
+PATH="$HOME/bin:$PATH" make -j 4 && \
 make install
 
 libaom (AV1 video encoder/decoder)
@@ -93,7 +93,7 @@ git -C aom pull 2> /dev/null || git clone --depth 1 https://aomedia.googlesource
 mkdir -p aom_build && \
 cd aom_build && \
 PATH="$HOME/bin:$PATH" cmake -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX="$HOME/ffmpeg_build" -DENABLE_SHARED=off -DENABLE_NASM=on ../aom && \
-PATH="$HOME/bin:$PATH" make && \
+PATH="$HOME/bin:$PATH" make -j 4 && \
 make install
 
 libsvtav (AV1 video encoder/decoder)
@@ -102,7 +102,7 @@ git -C SVT-AV1 pull 2> /dev/null || git clone https://gitlab.com/AOMediaCodec/SV
 mkdir -p SVT-AV1/build && \
 cd SVT-AV1/build && \
 PATH="$HOME/bin:$PATH" cmake -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX="$HOME/ffmpeg_build" -DCMAKE_BUILD_TYPE=Release -DBUILD_DEC=OFF -DBUILD_SHARED_LIBS=OFF .. && \
-PATH="$HOME/bin:$PATH" make && \
+PATH="$HOME/bin:$PATH" make -j 4 && \
 make install
 
 libdav1d (AV1 decoder, much faster than the one provided by libaom
@@ -142,7 +142,7 @@ PATH="$HOME/bin:$PATH" PKG_CONFIG_PATH="$HOME/ffmpeg_build/lib/pkgconfig" ./conf
   --enable-libx264 \
   --enable-libx265 \
   --enable-nonfree && \
-PATH="$HOME/bin:$PATH" make && \
+PATH="$HOME/bin:$PATH" make -j 4 && \
 make install && \
 hash -r
     
