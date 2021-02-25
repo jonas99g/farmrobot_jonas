@@ -2,6 +2,13 @@ https://electrosome.com/uart-raspberry-pi-python/
 pySerial
 
 MODBUS CRC 16 python
+https://pypi.org/project/libscrc/
+
+
+https://github.com/Kalebu/crc16-modbus-in-Python
+
+
+
 https://cms.digi.com/resources/documentation/digidocs/90001537/references/r_python_crc16_modbus.htm
 #*        File: CRC16.PY
 #*              CRC-16 (reverse) table lookup for Modbus or DF1
