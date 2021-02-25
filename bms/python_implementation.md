@@ -1,3 +1,6 @@
+CRC calculator https://crccalc.com/
+
+
 https://electrosome.com/uart-raspberry-pi-python/
 pySerial
 
