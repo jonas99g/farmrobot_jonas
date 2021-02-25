@@ -118,7 +118,18 @@ meson setup -Denable_tools=false -Denable_tests=false --default-library=static .
 ninja && \
 ninja install
 
+Audio libaries are probably needed for building, especially libfdk_aac for vpx
+libfdk-aac (AAC audio encoder)
+cd ~/ffmpeg_sources && \
+git -C fdk-aac pull 2> /dev/null || git clone --depth 1 https://github.com/mstorsjo/fdk-aac && \
+cd fdk-aac && \
+autoreconf -fiv && \
+./configure --prefix="$HOME/ffmpeg_build" --disable-shared && \
+make -j 4 && \
+make install
 
+libmp3lame
+libopus
 
 Building FFmpeg
 cd ~/ffmpeg_sources && \
