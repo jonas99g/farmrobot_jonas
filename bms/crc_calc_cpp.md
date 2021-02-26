@@ -44,3 +44,31 @@ uint16_t crcWord = 0xFFFF;
  }
  return crcWord;
 }
+
+
+
+
+
+
+unsigned int CRC(byte input[], int array_size)
+{
+unsigned int crc16 = 0xFFFF;
+int pos = 0;
+int k = 0;
+
+  for (pos = 0; pos < sizeof(input); pos++) {
+    crc16 ^= input[pos];          // XOR byte into least sig. byte of crc
+
+    for (k = 8; k != 0; k--) {    // Loop over each bit
+      if ((crc16 & 0x0001) != 0) {      // If the LSB is set
+        crc16 >>= 1;                    // Shift right and XOR 0xA001
+        crc16 ^= 0xA001;
+      }
+      else                            // Else LSB is not set
+        crc16 >>= 1;                    // Just shift right
+    }
+  }
+  /*Note, this number has low and high bytes swapped,
+  so swap bytes*/
+  return crc16;
+}

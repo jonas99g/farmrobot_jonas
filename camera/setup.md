@@ -162,3 +162,7 @@ hash -r
 source ~/.profile
 
 sudo apt install v4l-utils
+
+sudo apt install openssh-server
+sudo ufw allow ssh
+ssh pi@farmrobot
