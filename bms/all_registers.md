@@ -21,7 +21,9 @@ RegNr   Live Data
 13 Cell 14 Voltage [UINT_16] / Resolution 0.1 mV R
 14 Cell 15 Voltage [UINT_16] / Resolution 0.1 mV R
 15 Cell 16 Voltage [UINT_16] / Resolution 0.1 mV R
+
 32,33 BMS Lifetime Counter [UINT_32] / Resolution 1 s R
+
 34,35 Estimated Time Left [UINT_32] / Resolution 1 s R
 36,37 Battery Pack Voltage [FLOAT] / Resolution 1 V R
 38,39 Battery Pack Current [FLOAT] / Resolution 1 A R
