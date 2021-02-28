@@ -17,3 +17,9 @@ sudo apt install python3
 
 (backup: sudo cp /boot/firmware/cmdline.txt /boot/firmware/cmdline-bp.txt 
 sudo nano /boot/firmware/cmdline.txt remove 'console=ttyAMA0,115200' and 'kgdboc=ttyAMA0,115200' if present)
+
+MQTT
+ThingSpeak
+https://de.mathworks.com/help/thingspeak/use-raspberry-pi-board-that-runs-python-websockets-to-publish-to-a-channel.html
+sudo pip3 install paho-mqtt
+sudo pip3 install psutil

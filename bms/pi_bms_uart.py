@@ -1,6 +1,20 @@
 
 import serial
 import time
+from __future__ import print_function
+import paho.mqtt.publish as publish
+import psutil
+import string
+import random
+
+writeAPIKey = "V13QLD2JANKYVBV1"
+mqttAPIKey = "R95SKCL1DYRQNF67"
+channelID = "1314526"
+mqttHost = "mqtt.thingspeak.com"
+mqttUsername = "JonasGessmann"
+tTransport = "websockets"
+tPort = 80
+topic = "channels/" + channelID + "/publish/" + writeAPIKey
 
 ask_etl = bytes([0xAA, 0x09, 0x04, 0x22, 0x00, 0x23, 0x00, 0xF3, 0x1B]) #reg:34,35; [UINT_32] / Resolution 1 s R
 ask_packv = bytes([0xAA, 0x09, 0x04, 0x24, 0x00, 0x25, 0x00, 0xF0, 0x33]) #reg:36,37; [FLOAT] / Resolution 1 V R
@@ -21,15 +35,18 @@ float packv
 float packc 
 float syspow
 float mincv
-float maxcv
-float cvinbal
+#float maxcv
+#float cvinbal
 int soc
 float bmstemp
 str bmsstatus
-str events
-#initialize serial
-#esp: void setup() BMS.begin(115200, SERIAL_8N1, 26, 25); //rx, tx
+#str events
 BMS = serial.Serial(port='/dev/ttyAMA0',baudrate=115200,bytesize=serial.EIGHTBITS,parity=serial.PARITY_NONE,stopbits=serial.STOPBITS_ONE, timeout=1,xonxoff=0,rtscts=0,dsrdtr=0,write_timeout=1,)
+
+payload = "etl=" + str(etl) + "&packv=" + str(packv) + "&packc=" + str(packc) + "&syspow=" + str(syspow) + "&mincv=" + str(mincv) + "&soc=" + str(soc) + "&bmstemp=" + str(bmstemp) + "&bmsstatus=" + str(bmsstatus)
+try:
+  publish.single(topic, payload, hostname=mqttHost, transport=tTransport, port=tPort,auth={'username':mqttUsername,'password':mqttAPIKey})
+
 
 def read_status(ask_seq,init_seq,output_variable,pl_len) {
   bms_dump = bytes([])
@@ -45,6 +62,8 @@ def read_status(ask_seq,init_seq,output_variable,pl_len) {
   
   return output_variable
 }
+
+
 
 
 #send ask_sequence twice
