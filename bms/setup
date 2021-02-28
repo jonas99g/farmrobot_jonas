@@ -1,0 +1,19 @@
+www.raspberrypi.org/documentation/configuration/uart.md
+Pi 4 - 6 UARTS (UART1 is mini UART)
+UART0 is secondary, which is used to connect bluetooth interface by default
+first PL011 (UART0) is found as linux device under /dev/ttyAMA0
+
+enable_uart=1 in /boot/firmware/config.txt enables PL011 (UART0) as primary interface
+dtoverlay=disable-bt #restoring UART0/ttyAMA0 over GPIOs 14(tx) & 15(rx), making the full UART PL011 the primary interface /dev/serial0
+
+enabling further uarts: www.raspberrypi.org/documentation/configuration/device-tree.md
+
+sudo apt install python3
+ wget https://bootstrap.pypa.io/get-pip.py
+ sudo python3 get-pip.py
+ sudo pip install pyserial
+
+
+
+(backup: sudo cp /boot/firmware/cmdline.txt /boot/firmware/cmdline-bp.txt 
+sudo nano /boot/firmware/cmdline.txt remove 'console=ttyAMA0,115200' and 'kgdboc=ttyAMA0,115200' if present)

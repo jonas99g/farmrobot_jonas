@@ -1,9 +1,6 @@
-#esp: HardwareSerial BMS(1); //defining "BMS" as HardwareSerial on UART 1
 
-#Py Pi Code
 import serial
 import time
-
 
 ask_etl = bytes([0xAA, 0x09, 0x04, 0x22, 0x00, 0x23, 0x00, 0xF3, 0x1B]) #reg:34,35; [UINT_32] / Resolution 1 s R
 ask_packv = bytes([0xAA, 0x09, 0x04, 0x24, 0x00, 0x25, 0x00, 0xF0, 0x33]) #reg:36,37; [FLOAT] / Resolution 1 V R
@@ -16,12 +13,8 @@ ask_soc = bytes([0xAA, 0x09, 0x04, 0x2E, 0x00, 0x2F, 0x00, 0xF5, 0x4B]) #reg:46,
 ask_bmstemp = bytes([0xAA, 0x09, 0x02, 0x30, 0x00, 0x8A, 0x44])#reg:48; [INT_16] / Resolution 0.1 °C R
 ask_bmsstatus = bytes([0xAA, 0x09, 0x02, 0x32, 0x00, 0x8B, 0x24]) #reg:50 BMS Online Status [UINT_16] / 0x91-Charging, 0x92-Fully Charged, 0x93-Discharging, 0x96-Regenertion, 0x97-Idle, 0x9B-Fault R
 ask_nevents = bytes([0xAA, 0x11, 0xBF, 0x1C]) #Read Tiny BMS newest Events
-
-initSeq = bytes([0xAA, 0x09, 0x34])
-
-#initialize serial
-#esp: void setup() BMS.begin(115200, SERIAL_8N1, 26, 25); //rx, tx
-BMS = serial.Serial()
+init_seq_2 = bytes([0xAA, 0x09, 0x04])
+init_seq_4 = bytes([0xAA, 0x09, 0x08])
 
 int etl #convert seconds to minutes?
 float packv 
@@ -33,7 +26,26 @@ float cvinbal
 int soc
 float bmstemp
 str bmsstatus
-chr events
+str events
+#initialize serial
+#esp: void setup() BMS.begin(115200, SERIAL_8N1, 26, 25); //rx, tx
+BMS = serial.Serial(port='/dev/ttyAMA0',baudrate=115200,bytesize=serial.EIGHTBITS,parity=serial.PARITY_NONE,stopbits=serial.STOPBITS_ONE, timeout=1,xonxoff=0,rtscts=0,dsrdtr=0,write_timeout=1,)
+
+def read_status(ask_seq,init_seq,output_variable,pl_len) {
+  bms_dump = bytes([])
+  msg = bytes ([])
+  BMS.reset_input_buffer()
+  BMS.reset_output_buffer()
+  BMS.write(ask_seq)
+  BMS.flush()
+  BMS.write(ask_seq)
+  BMS.flush()
+  bms_dump = BMS.read_until(init_seq)
+  msg = BMS.read((pl_len+5))
+  
+  return output_variable
+}
+
 
 #send ask_sequence twice
 #receive answer sequence and store it
