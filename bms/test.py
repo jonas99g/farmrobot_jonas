@@ -1,6 +1,7 @@
 import time
 import serial
-ask_etl = b'\xAA\x09\x04\x22\x00\x23\x00\xF3\x1B'
+#ask_etl = b'\xAA\x09\x04\x22\x00\x23\x00\xF3\x1B'
+ask_etl = bytes([0xAA, 0x09, 0x04, 0x22, 0x00, 0x23, 0x00, 0xF3, 0x1B])
 BMS = serial.Serial(port='/dev/ttyAMA0',baudrate=115200,bytesize=serial.EIGHTBITS,parity=serial.PARITY_NONE,stopbits=serial.STOPBITS_ONE, timeout=1,xonxoff=0,rtscts=0,dsrdtr=0)
 
 While 1:
