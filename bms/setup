@@ -5,6 +5,7 @@ first PL011 (UART0) is found as linux device under /dev/ttyAMA0
 
 enable_uart=1 in /boot/firmware/config.txt enables PL011 (UART0) as primary interface
 dtoverlay=disable-bt #restoring UART0/ttyAMA0 over GPIOs 14(tx) & 15(rx), making the full UART PL011 the primary interface /dev/serial0
+sudo adduser pi dialout
 
 enabling further uarts: www.raspberrypi.org/documentation/configuration/device-tree.md
 

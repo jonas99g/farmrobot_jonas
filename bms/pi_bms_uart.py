@@ -2,7 +2,6 @@ import sys
 import os
 import serial
 import time
-from __future__ import print_function
 import paho.mqtt.publish as publish
 import psutil
 import string
@@ -17,7 +16,7 @@ tTransport = "websockets"
 tPort = 80
 topic = "channels/" + channelID + "/publish/" + writeAPIKey
 
-ask_etl = bytes([0xAA, 0x09, 0x04, 0x22, 0x00, 0x23, 0x00, 0xF3, 0x1B]) #reg:34,35; [UINT_32] / Resolution 1 s R
+ask_etl = b'\xAA\x09\x04\x22\x00\x23\x00\xF3\x1B'#ask_etl = bytes([0xAA, 0x09, 0x04, 0x22, 0x00, 0x23, 0x00, 0xF3, 0x1B]) #reg:34,35; [UINT_32] / Resolution 1 s R
 ask_packv = bytes([0xAA, 0x09, 0x04, 0x24, 0x00, 0x25, 0x00, 0xF0, 0x33]) #reg:36,37; [FLOAT] / Resolution 1 V R
 ask_packc = bytes([0xAA, 0x09, 0x04, 0x26, 0x00, 0x27, 0x00, 0xF0, 0xEB]) #reg:38,39; [FLOAT] / Resolution 1 A R
 #syspow [FLOAT] / Resolution 1 W R
@@ -28,8 +27,8 @@ ask_soc = bytes([0xAA, 0x09, 0x04, 0x2E, 0x00, 0x2F, 0x00, 0xF5, 0x4B]) #reg:46,
 ask_bmstemp = bytes([0xAA, 0x09, 0x02, 0x30, 0x00, 0x8A, 0x44])#reg:48; [INT_16] / Resolution 0.1 °C R
 ask_bmsstatus = bytes([0xAA, 0x09, 0x02, 0x32, 0x00, 0x8B, 0x24]) #reg:50 BMS Online Status [UINT_16] / 0x91-Charging, 0x92-Fully Charged, 0x93-Discharging, 0x96-Regenertion, 0x97-Idle, 0x9B-Fault R
 ask_nevents = bytes([0xAA, 0x11, 0xBF, 0x1C]) #Read Tiny BMS newest Events
-init_seq_2 = bytes([0xAA, 0x09, 0x04])
-init_seq_4 = bytes([0xAA, 0x09, 0x08])
+init_seq_2 = b'\xAA\x09\x04'
+init_seq_4 = b'\xAA\x09\x08'
 
 int etl #convert seconds to minutes?
 float packv 
@@ -54,8 +53,6 @@ while 1:
 
 def read_status_2(ask_seq) {
   bms_dump = bytes([])
-  msg = bytes ([])
-  pl_len = 4
   BMS.reset_input_buffer()
   BMS.reset_output_buffer()
   BMS.write(ask_seq)
@@ -63,7 +60,7 @@ def read_status_2(ask_seq) {
   BMS.write(ask_seq)
   BMS.flush()
   bms_dump = BMS.read_until(init_seq_2)
-  msg = BMS.read(size=(pl_len+5))
+  msg = BMS.read(size=6)
   return msg
 }
 def read_status_4(ask_seq) {
