@@ -61,14 +61,6 @@ float bmstemp = 0
 #str events
 BMS = serial.Serial(port='/dev/ttyAMA0',baudrate=115200,bytesize=serial.EIGHTBITS,parity=serial.PARITY_NONE,stopbits=serial.STOPBITS_ONE, timeout=1,xonxoff=0,rtscts=0,dsrdtr=0,write_timeout=1,)
 
-while 1:
-  etl = int(read_status_4(ask_etl))
-
-  payload = "etl=" + str(etl) + "&packv=" + str(packv) + "&packc=" + str(packc) + "&syspow=" + str(syspow) + "&mincv=" + str(mincv) + "&soc=" + str(soc) + "&bmstemp=" + str(bmstemp) """+ "&bmsstatus=" + str(bmsstatus""")
-  try:
-    publish.single(topic, payload, hostname=mqttHost, transport=tTransport, port=tPort,auth={'username':mqttUsername,'password':mqttAPIKey})
-
-
 def read_status_2(ask_seq) {
   bms_dump = bytes([])
   BMS.reset_input_buffer()
@@ -95,6 +87,16 @@ def read_status_4(ask_seq) {
   msg = BMS.read(size=(pl_len+5))
   return msg
 }
+
+while 1:
+  etl = int(read_status_4(ask_etl))
+
+  payload = "etl=" + str(etl) + "&packv=" + str(packv) + "&packc=" + str(packc) + "&syspow=" + str(syspow) + "&mincv=" + str(mincv) + "&soc=" + str(soc) + "&bmstemp=" + str(bmstemp) """+ "&bmsstatus=" + str(bmsstatus""")
+  try:
+    publish.single(topic, payload, hostname=mqttHost, transport=tTransport, port=tPort,auth={'username':mqttUsername,'password':mqttAPIKey})
+
+
+
 
 
 
