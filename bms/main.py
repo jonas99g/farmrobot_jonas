@@ -55,11 +55,12 @@ def read_etl():
     BMS.write(ask_etl)
     m = 0
     while BMS.any() > 0:
-        msg[m] = BMS.read(1)
+        msg[m] = BMS.read(nbytes=1)
         m += 1
     i = 0
     for el in msg:
         if msg[i] == etl_init[0] & msg[i + 1] == etl_init[1]:
+            global j
             j = i
             break
         i += 1
