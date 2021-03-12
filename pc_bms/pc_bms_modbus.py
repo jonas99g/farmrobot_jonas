@@ -6,37 +6,13 @@ port = '/dev/ttyUSB0'
 client = ModbusSerialClient(method='rtu', port=port, timeout=2, baudrate=115200)
 client.connect()
 
-# Make a request to wake up the BMS
-client.read_holding_registers(0, 1, unit=0xAA)
-
-# Get a single register
-temperature = client.read_holding_registers(48, 1, unit=0xAA).registers[0]
-print(f"BMS temperature: {temperature/10}C")
-
-# Get a range of registers
-registers = client.read_holding_registers(0, 16, unit=0xAA).registers
-for cell, value in enumerate(registers):
-    print(f"Cell {16-cell}: {value/10000}V")
-
-# Get a float value stored across 2 registers
-registers = client.read_holding_registers(36, 2, unit=0xAA).registers
-pack_voltage = np.array(registers, dtype=np.uint16).view(dtype=np.float32)[0]
-print(f"Pack voltage: {pack_voltage}V")
-
-# Get a 32-bit unsigned integer value stored across 2 registers
-registers = client.read_holding_registers(46, 2, unit=0xAA).registers
-soc = np.array(registers, dtype=np.uint16).view(dtype=np.uint32)[0]
-print(f"State of charge: {soc/1000000}%")
-
-#
-# Get more data
-#
-
 def convert(array, type):
     return np.array(array, dtype=np.uint16).view(dtype=type)[0]
 
 def read_registers(address, count):
     return client.read_holding_registers(address, count, unit=0xAA).registers
+
+client.read_holding_registers(0, 1, unit=0xAA)
 
 lifetime_counter = convert(read_registers(32, 2), np.uint32)
 print(f"Lifetime counter: {lifetime_counter}s")
@@ -61,6 +37,12 @@ print(f"Max cell voltage difference: {cell_diff/10000}V")
 
 soc = convert(read_registers(46, 2), np.uint32)
 print(f"State of charge: {soc/1000000}%")
+
+bms_temperature = read_registers(48, 1)[0]
+print(f"BMS temperature: {bms_temperature/10}C")
+
+bms_online = read_registers(50, 1)[0]
+print(f"Online status: {bms_online}")
 
 max_discharge_current = read_registers(102, 1)[0]
 print(f"Max discharge current: {max_discharge_current/10}A")
