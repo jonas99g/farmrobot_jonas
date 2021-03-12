@@ -12,19 +12,6 @@ import esp
 #esp.osdebug(None)       # turn off vendor O/S debugging messages
 esp.osdebug(0)
 
-def do_connect():
-    import network
-    wlan = network.WLAN(network.STA_IF)
-    wlan.active(True)
-    if not wlan.isconnected():
-        print('connecting to network...')
-        wlan.connect('Jonas', 'test1234')
-        while not wlan.isconnected():
-            pass
-    print('network config:', wlan.ifconfig())
-
-
-
 ask_etl = bytes([0xAA, 0x20, 0x7E, 0xC8]) #reg:34,35; [UINT_32] / Resolution 1 s R -->DATA3
 ask_packv = bytes([0xAA, 0x14, 0x7E, 0xAF]) #reg:36,37; [FLOAT] / Resolution 1 V R
 ask_packc = bytes([0xAA, 0x15, 0xBF, 0x6F]) #reg:38,39; [FLOAT] / Resolution 1 A R
@@ -37,54 +24,45 @@ ask_bmstemp = bytes([0xAA, 0x1B, 0x3F, 0x1B])#reg:48(,42,43); [INT_16] / Resolut
 ask_bmsstatus = bytes([0xAA, 0x18, 0x7F, 0x1A]) #reg:50 BMS Online Status [UINT_16] / 0x91-Charging, 0x92-Fully Charged, 0x93-Discharging, 0x96-Regenertion, 0x97-Idle, 0x9B-Fault R
 ask_nevents = bytes([0xAA, 0x11, 0xBF, 0x1C]) #Read Tiny BMS newest Events
 
-
-int etl = 0 #convert seconds to minutes?
-float packv = 0
-float packc = 0
-float syspow = 0 #SystemPower = PackVoltage * PackCurrent
-float mincv = 0 #MinCellV/1000
-float maxcv = 0
-float cvinbal = 0
-int soc = 0 #SOC/1000000
-float bmstemp = 0
-str bmsstatus = ""
-str events = ""
+def do_connect():
+    import network
+    wlan = network.WLAN(network.STA_IF)
+    wlan.active(True)
+    if not wlan.isconnected():
+        print('connecting to network...')
+        wlan.connect('Jonas', 'test1234')
+        while not wlan.isconnected():
+            pass
+    print('network config:', wlan.ifconfig())
 
 BMS = machine.UART(2, 115200)
 BMS.init(baudrate=115200, bits=8, parity=None, stop=1, tx=25, rx=26, timeout=500)
 
-def read_etl() {
+def read_etl():
   bms_dump = bytes([])
   msg = bytes ([])
   msgc = bytes ([])
   seq = bytes ([])
   seqc = bytes ([])
-  pl_len = 8
-  total_len = 13
-  bms_dump = BMS.read()
-  BMS.write(ask_seq)
-  BMS.write(ask_seq)
-  if (BMS.any() > 0):
+  etl_init = bytes ([0xAA, 0x20])
+  total_len = 16
+  BMS.readinto(bms_dump)
+  BMS.write(ask_etl)
+  BMS.write(ask_etl)
+  while BMS.any() > 0:
     BMS.readinto(msg)
-  for (i=0,i<=len(msg),i+=1):
-  msgc = [msg[i],msg[i+1],msg[i+2]]
-    if msgc == init_seq_4
-      j = i
-  for (k=0,k<total_len,j+=1):  
-    seqc.append(msg[j]) 
+  for i in msg & msgc != etl_init:
+    msgc= msg[i]+msg[i+1]
+    j = i
+  k=0
+  while k<total_len:
+    seq += msg[j]
+    j+=1
+    k+=1
   return seq
-}
-'''
-while 1:
-  do_connect()
-  etl = read_etl()
 
-
-
-
-
-"""send ask_sequence twice
-receive answer sequence and store it
-check init Sequence (eg AA 09 04)
-calculate and check CRC16 MODBUS checkbit
-read and encode value to variable"""
+print(read_etl())
+#while 1:
+  #do_connect()
+  #etl = read_etl()
+  #print(read_etl())
