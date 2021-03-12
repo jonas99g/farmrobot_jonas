@@ -1,8 +1,8 @@
 import machine
-import esp
-machine.freq(240000000)
+import esp32
+# machine.freq(240000000)
 # esp.osdebug(None) #turn off vendor O/S debugging messages
-esp.osdebug(0)
+esp32.osdebug(0)
 
 ask_etl = bytearray([0xAA, 0x20, 0x7E, 0xC8])
 # reg:34,35; [UINT_32] / Resolution 1 s R -->DATA3
