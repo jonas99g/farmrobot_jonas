@@ -1,0 +1,32 @@
+Fully Charged Voltage: 4,00
+Fully Discharged Voltage: 3,00
+Early Balancing Threshold: 3,95
+Charge Finished Current: 0,20
+Battery Capacity: 30,0
+Number of Series Cells: 6
+Allowed Disbalance: 15
+Set SOC manually, %: 95
+Over-Voltage Cutoff: 4,20
+Under-Voltage Cutoff: 2,80
+Discharge Overcurrent Cutoff: 30
+Charge Overcurrent Cutoff: 20
+Over-Heat Cutoff: 40
+Low Temp. Charger Disable: 0
+Automatic Recovery: 1
+BMS Mode: Dual Port
+Single Port Switch Type: Internal FET
+Load Switch Type: Discharge FET
+Load Ignition: Disabled
+Load Precharge: Disabled
+Load Precharge Duration: 0.1 s
+Charger Type: Generic CC/CV
+Charger Switch Type: Charge FET
+Charger Detection: Internal
+Pulses Per Unit: 1
+Distance Unit: Kilometers
+Speed Sensor Input: Disabled
+Broadcast: Disabled
+Protocol: ASCII
+Temperature Sensor Type: Dual 10K NTC Sensor
+Invert External Current Sensor Direction: 0
+Disable Load/Charger Switch Diagnostics: 0
