@@ -36,6 +36,20 @@ max_discharge_current = read_registers(102, 1)[0]
 max_charge_current = read_registers(103, 1)[0]
 charge_count = read_registers(111, 1)[0]
 
-myData={'name' : 'foo', 'cpu' : 60, 'mem' : 50}
+myData = {
+    'lifetime_counter': lifetime_counter,
+    'time_left': time_left,
+    'pack_voltage': pack_voltage,
+    'pack_current': pack_current,
+    'min_cell': min_cell,
+    'max_cell': max_cell,
+    'cell_diff': cell_diff,
+    'soc': soc,
+    'bms_temperature': bms_temperature,
+    'bms_online': bms_online,
+    'max_discharge_current': max_discharge_current,
+    'max_charge_current': max_charge_current,
+    'charge_count': charge_count
+    }
 mqtt_client.publishEvent(eventId="status", msgFormat="json", data=myData, qos=0, onPublish=None)
 mqtt_client.disconnect()
