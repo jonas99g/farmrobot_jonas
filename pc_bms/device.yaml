@@ -1,0 +1,15 @@
+identity:
+    orgId: q74k3e
+    typeId: RaspberryPi4B
+    deviceId: farmrobot-raspi-4b-xi-lab-ip-15
+auth:
+    token: 5GNOxfx9&mUo7*?8fP
+options:
+    domain: internetofthings.ibmcloud.com
+    logLevel: error
+    mqtt:
+        port: 8883
+        transport: tcp
+        cleanStart: true
+        sessionExpiry: 7200
+        keepAlive: 120
