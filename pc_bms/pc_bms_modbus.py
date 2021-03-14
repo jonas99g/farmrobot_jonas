@@ -1,10 +1,13 @@
 import numpy as np
+
 from pymodbus.client.sync import ModbusSerialClient
 
 # Modbus client
-port = '/dev/ttyUSB0'
-client = ModbusSerialClient(method='rtu', port=port, timeout=2, baudrate=115200)
+dev_port = '/dev/ttyUSB0'
+client = ModbusSerialClient(method='rtu', port=dev_port, timeout=2, baudrate=115200)
 client.connect()
+
+client.read_holding_registers(0, 1, unit=0xAA)
 
 
 def convert(array, da_type):
@@ -14,8 +17,6 @@ def convert(array, da_type):
 def read_registers(address, count):
     return client.read_holding_registers(address, count, unit=0xAA).registers
 
-
-client.read_holding_registers(0, 1, unit=0xAA)
 
 lifetime_counter = convert(read_registers(32, 2), np.uint32)
 print(f"Lifetime counter: {lifetime_counter}s")
