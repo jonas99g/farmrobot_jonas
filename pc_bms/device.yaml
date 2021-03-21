@@ -6,10 +6,8 @@ auth:
     token: 5GNOxfx9&mUo7*?8fP
 options:
     domain: internetofthings.ibmcloud.com
-    logLevel: error
+    logLevel: info
     mqtt:
-        port: 8883
         transport: tcp
-        cleanStart: true
-        sessionExpiry: 7200
-        keepAlive: 120
+        cleanStart: false
+        keepAlive: 60
